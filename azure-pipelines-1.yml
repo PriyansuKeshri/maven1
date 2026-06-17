@@ -1,0 +1,23 @@
+trigger:
+- main
+
+pool:
+  name: 'testpool'
+
+steps:
+
+- checkout: self
+
+- script: mvn clean package
+  displayName: 'Build Maven Project'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    testResultsFormat: 'JUnit'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'target'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
